@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zxx">
+
+<head>
+  <title>HOME</title>
+  <!-- Meta-Tags -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="utf-8">
+  <meta name="keywords" content=""/>
+
+  <script>
+    addEventListener("load", function () {
+      setTimeout(hideURLbar, 0);
+    }, false);
+
+    function hideURLbar() {
+      window.scrollTo(0, 1);
+    }
+  </script>
+  <!-- //Meta-Tags -->
+  <!-- Stylesheets -->
+  <link href="/static/css/style.css" rel='stylesheet' type='text/css' />
+  <link rel="stylesheet" type="text/css" href="/static/bootstrap-3.3.7-dist/css/bootstrap.min.css">
+  <!--// Stylesheets -->
+  <!--fonts-->
+  <!-- title -->
+	<link href="http://fonts.googleapis.com/css?family=Abhaya+Libre:400,500,600,700,800" rel="stylesheet">
+  <!-- body -->
+  <!--//fonts-->
+</head>
+
+<body>
+  <header>
+    <h1>物流订单录入系统</h1>
+  </header>
+  <div class="w3ls-contact">
+
+    <!-- form starts here -->
+    <form action="/save_to_mongo" method="post" style="margin-bottom: 30px;">
+      <div class="agile-field-txt">
+        <label>
+          品名 :</label>
+        <div class="mr_agilemain">
+          <select id="author" class="form-control" name="author">
+            <option value="">品名</option>
+            <option value="sunj">sunj</option>
+            <option value="zhangxf">zhangxf</option>
+            <option value="zhangy">zhangy</option>
+        </div>
+      </div>
+      <div class="agile-field-txt">
+        <label>
+          Mobile No:</label>
+        <input type="text" name="name" placeholder=" " required="" />
+      </div>
+      <div class="agile-field-txt">
+        <label>
+         Moving from</label>
+		 <textarea name="Comments" placeholder="Street Address or ZIP code" required="" id="ddd"></textarea>
+      </div>
+      <div class="agile-field-txt">
+        <label>
+          Moving to</label>
+         <textarea placeholder="请输入要分析感情极性的文本" class="form-control" name="arti" id="move_from"></textarea>
+      </div>
+      <button type="button" class="btn btn-primary btn-lg btn-block pull-left" onclick="save_data()">提交</button>
+    </form>
+  </div>
+  <!-- //form ends here -->
+  <div class="copy-wthree">
+    <p>Copyright &copy; 2018.Company name All rights reserved.<a target="_blank" href="http://sc.chinaz.com/moban/">&#x7F51;&#x9875;&#x6A21;&#x677F;</a></p>
+  </div>
+</body>
+<script type="text/javascript" src="/static/echarts.min.js"></script>
+<script type="text/javascript" src="/static/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="/static/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+<script>
+  function save_data() {
+
+      var word = $("#author").val();
+
+      $.ajax({
+            url: "/save_to_mongo",
+            data: {"s": word},
+            dataType: "json",
+            type: "POST"
+            // success:function(sim){
+            //     div_box_neg = $("#neg");
+            //     div_box_pos = $("#pos");
+            //     if(sim["state"] == "1") {
+            //         div_box_neg.append('<ul class="u">' + '<li>' + sim.result[1] + '</li>' + '</ul>')
+            //         div_box_pos.append('<ul class="u">' + '<li>' + sim.result[0] + '</li>' + '</ul>')
+            //     }
+            // }
+        })
+  }
+  </script>
+<!-- //Body -->
+
+</html>

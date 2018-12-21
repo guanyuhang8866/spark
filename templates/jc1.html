@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>嘉诚AI基础功能演示平台</title>
+    <link rel="stylesheet" type="text/css" href="/static/bootstrap-3.3.7-dist/css/bootstrap.min.css">
+    <style>
+        h1,h2,h3,h4 {text-align: center;}
+        div.section {padding-top:50px;}
+        button#m5,button#m6 {margin-left: 10px; margin-right: 10px}
+        ul.u{color:FireBrick}
+        #m5,#m6 {color:FireBrick}
+    </style>
+</head>
+<body style="position: relative" data-spy="scroll" data-target="#navbar">
+<nav class="navbar navbar-default navbar-fixed-top" style="border-radius:0">
+  <div class="container">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">
+          <img style="height:20px;width:20px;" src="/static/logo.png" title="嘉诚公司"/>
+      </a>
+      <a class="navbar-brand" href="#">
+        嘉诚AI基础功能演示平台
+      </a>
+    </div>
+    <div id="navbar" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+          <li role="presentation">
+            <a href="#ner_txt">实体识别</a>
+          </li>
+          <li role="presentation">
+            <a href="#pos_neg_txt">感情极性分析</a>
+          </li>
+          <li role="presentation">
+            <a href="#similar_txt">近义词</a>
+          </li>
+        </ul>
+    </div>
+  </div><!-- /.container-fluid -->
+</nav>
+<div class="container" style="margin-top:50px;">
+<div class="page-header">
+  <h1>NER文本分析 <small></small></h1>
+</div>
+<form action="/ner_text" method="post" style="margin-bottom: 30px;">
+    <p><textarea placeholder="请输入要分析NER的文本" class="form-control" rows="5" name="arti" id="ner_txt"></textarea></p>
+    <button type="button" class="btn btn-primary btn-lg btn-block pull-left" onclick="get_ner()">提交</button>
+</form>
+<div id="ner" class="section">
+    <div class="ner"><h2>命名实体</h2>
+        <div class="row">
+            <div class="col-md-3">
+                <div class="panel panel-default">
+                    <div class="panel-heading"><h4><p class="text-danger">地理位置</p></h4></div>
+                    <div class="panel-body" id="loc">
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="panel panel-default">
+                    <div class="panel-heading"><h4><p class="text-danger">人名</p></h4></div>
+                    <div class="panel-body" id="per">
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="panel panel-default">
+                    <div class="panel-heading"><h4><p class="text-danger">组织机构</p></h4></div>
+                    <div class="panel-body" id="org">
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="panel panel-default">
+                    <div class="panel-heading"><h4><p class="text-danger">公司名</p></h4></div>
+                    <div class="panel-body" id="com">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="page-header">
+  <h1>感情极性分析 <small></small></h1>
+</div>
+<form action="/pos_neg_text" method="post" style="margin-bottom: 30px;">
+    <p><textarea placeholder="请输入要分析感情极性的文本" class="form-control" rows="5" name="arti" id="pos_neg_txt"></textarea></p>
+    <button type="button" class="btn btn-primary btn-lg btn-block pull-left" onclick="get_pos_neg()">提交</button>
+</form>
+<div id="pos_neg" class="section">
+    <div class="pos_neg"><h2>感情极性</h2>
+        <div class="row">
+            <div class="col-md-offset-3 col-md-3">
+                <div class="panel panel-default">
+                    <div class="panel-heading"><h4><p class="text-danger">积极性得分</p></h4></div>
+                    <div class="panel-body" id="pos">
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="panel panel-default">
+                    <div class="panel-heading"><h4><p class="text-danger">消极性得分</p></h4></div>
+                    <div class="panel-body" id="neg">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="page-header">
+  <h1>近义词文本分析 <small></small></h1>
+</div>
+<form id="jyc" action="/similar_text" method="post" style="margin-bottom: 30px;">
+    <p><textarea placeholder="请输入要分析Similar的文本" class="form-control" rows="5" id="similar_txt" name="area"></textarea></p>
+    <button type="button" class="btn btn-primary btn-lg btn-block pull-left" onclick="get_similar()">提交</button>
+</form>
+<div class="row">
+    <div class="col-md-12">
+        <div id="simisimi" class="section">
+            <div class="sim"><h2>近义词</h2>
+                <div class="simk">
+                    <div id="similar_result">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<div style="margin-top:40px;"><p style="text-align: right">copyright 嘉诚信息</p></div>
+<script type="text/javascript" src="/static/echarts.min.js"></script>
+<script type="text/javascript" src="/static/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="/static/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+<script>
+    function get_ner() {
+
+        var word = $("#ner_txt").val();
+        $("#loc").html("");
+        $("#per").html("");
+        $("#org").html("");
+        $("#com").html("");
+        $.ajax({
+            url: "/",
+            data: {"text": word},
+            dataType: "json",
+            type: "POST",
+            success:function(result){
+                div_box_loc = $("#loc");
+                div_box_per = $("#per");
+                div_box_org = $("#org");
+                div_box_com = $("#com");
+                if(result["location"]) {
+                    for (var i = 0; i < result.location.length; i++) {
+                        div_box_loc.append('<ul class="u">' + '<li>' + result.location[i] + '</li>' + '</ul>')
+                    }
+                }
+                if(result["person_name"]) {
+                    for (var i = 0; i < result.person_name.length; i++) {
+                        div_box_per.append('<ul class="u">' + '<li>' + result.person_name[i] + '</li>' + '</ul>')
+                    }
+                }
+                if(result["org_name"]) {
+                    for (var i = 0; i < result.org_name.length; i++) {
+                        div_box_org.append('<ul class="u">' + '<li>' + result.org_name[i] + '</li>' + '</ul>')
+                    }
+                }
+                if(result["company_name"]) {
+                    for (var i = 0; i < result.company_name.length; i++) {
+                        div_box_com.append('<ul class="u">' + '<li>' + result.company_name[i] + '</li>' + '</ul>')
+                    }
+                }
+            }
+        })
+    }
+    function get_pos_neg() {
+
+        var word = $("#pos_neg_txt").val();
+        $("#neg").html("");
+        $("#pos").html("");
+        $.ajax({
+            url: "/pos_neg_text",
+            data: {"pos_neg_text": word},
+            dataType: "json",
+            type: "POST",
+            success:function(sim){
+                div_box_neg = $("#neg");
+                div_box_pos = $("#pos");
+                if(sim["state"] == "1") {
+                    div_box_neg.append('<ul class="u">' + '<li>' + sim.result[1] + '</li>' + '</ul>')
+                    div_box_pos.append('<ul class="u">' + '<li>' + sim.result[0] + '</li>' + '</ul>')
+                }
+            }
+        })
+    }
+    function get_similar() {
+        var word = $("#similar_txt").val()
+        $("#similar_result").html("");
+        $.ajax({
+            url: "/similar_text",
+            data: {"similar_word": word},
+            dataType: "json",
+            type: "POST",
+            success:function(sim){
+                div_box = $("#similar_result");
+                {#console.log(data.sy);#}
+                for (var i = 0; i<sim.length; i++){
+                    div_box.append('<button class="btn btn-default" id="m5" onclick="get_similar_new(\'' + sim[i] + '\')"> '+ sim[i] + '</button>')
+                }
+            }
+        })
+    }
+    function get_similar_new(word) {
+        $("#similar").val(word);
+        $.ajax({
+            url: "/similar_text",
+            data: {"similar_word": word},
+            dataType: "json",
+            type: "POST",
+            success:function(sim){
+                console.log(sim);
+                $("#similar_result").html("");
+                for (var i = 0; i<sim.length; i++){
+                    $("#similar_result").append('<button class="btn btn-default" id="m6" onclick="get_similar_new(\''+ sim[i] +'\')"> '+ sim[i] + ' </button>')
+                }
+            }
+        })
+    }
+</script>
+</body>
+</html>
+
